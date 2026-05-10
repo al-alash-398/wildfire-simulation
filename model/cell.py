@@ -6,6 +6,8 @@ class CellState(IntEnum):
     # Возможные состояния клетки
 
     EMPTY = 0   # пустошь
-    TREE = 1    # дерево
-    FIRE = 2    # огонь
-    WATER = 3   # вода (преграда)
+    TREE_PINE = 1  # сосна
+    TREE_BIRCH = 2  # берёза
+    TREE_OAK = 3  # дуб
+    FIRE = 4 # огонь
+    WATER = 5 # вода

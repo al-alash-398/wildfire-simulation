@@ -9,10 +9,16 @@ def main() -> None:
     config = SimulationConfig()
     grid = ForestGrid(config)
 
-    # Добавляем водные преграды
-    grid.add_water(30, 30, 50, 50)
+    # Озеро в центре
+    grid.add_water(40, 40, 60, 60)
 
-    run_animation(grid, frames=config.frames, interval=config.interval_ms)
+    # Поджигаем несколько точек для начала
+    grid.grid[45, 65] = 4
+    grid.grid[46, 65] = 4
+    grid.grid[47, 65] = 4
+
+    # Передаём config вторым аргументом
+    run_animation(grid, config, frames=config.frames, interval=config.interval_ms)
 
 
 if __name__ == "__main__":
