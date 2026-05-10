@@ -7,7 +7,7 @@ from model.grid import ForestGrid
 from visualization.plot import CMAP, NORM
 
 
-def run_animation(grid: ForestGrid, config, frames: int = 200, interval: int = 100) -> FuncAnimation:
+def run_animation(grid: ForestGrid, config, stats=None, frames: int = 200, interval: int = 100) -> FuncAnimation:
     # Запускает анимацию симуляции
     fig = plt.figure(figsize=(12, 6.5))
     ax = fig.add_subplot(111)
@@ -73,10 +73,16 @@ def run_animation(grid: ForestGrid, config, frames: int = 200, interval: int = 1
 
     fig.canvas.mpl_connect('key_press_event', on_key)
 
-    def animate_fn(i: int) -> None:
+    def animate_fn(i: int, stats) -> None:
         animate_fn.frame = i
+
+        if stats is not None:
+            stats.record(animate_fn.grid) # записываем текущее состояние
+
+        # Обновляем картинку
         im.set_data(animate_fn.grid)
         animate_fn.grid = grid.step()
+
         if i % 10 == 0:
             update_info()
 
@@ -85,7 +91,8 @@ def run_animation(grid: ForestGrid, config, frames: int = 200, interval: int = 1
     update_info()
 
     anim = animation.FuncAnimation(
-        fig, animate_fn, interval=interval, frames=frames
+        fig, animate_fn, interval=interval, frames=frames,
+        fargs=(stats,)
     )
     animate_fn.anim = anim
     plt.show()
